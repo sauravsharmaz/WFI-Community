@@ -1,4 +1,8 @@
-window.onload= DarkMode()
+document.body.onload= startup_functions()
+
+function startup_functions(){	
+	DarkMode();
+}
 
 function DarkMode() {
 	var all_Ques_class = document.getElementsByClassName('question-card');
