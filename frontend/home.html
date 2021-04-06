@@ -4,15 +4,16 @@
 {% block body %}
 
 <!--  search button   -->
+<form action="" method="get">
 <div class="container py-3 row">
   <div class="col-md-8 offset-2">
     <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search">
+      <input name="searchfieldText" type="text" class="form-control" placeholder="Search">
       <button class="btn btn-danger" type="submit">Search</button>
     </div>
   </div>
 </div>
-
+</form>
 <!-- Question Card -->
 {% for question in page_object %}
 <div class="container question-card">
@@ -24,6 +25,7 @@
         <a href="" class="mr-2">{{question.AskedBy}}</a>
         <a href="answers/{{question.title}}" class="mr-2">5 answers</a>
         <a href="" class="mr-2">10 comments</a>
+        <a href="" class="mr-2">{{question.ask_time}}</a>
       </p>
 
       <form hidden method="get">
@@ -47,9 +49,14 @@
     <li class="page-item"><a class="page-link" href="?page={{page_object.previous_page_number}}">Previous</a></li>
   {% endif %}
   
-  <!-- Display current page number -->
-    <li name= "page" class="page-item active"><a class="page-link">{{page_object.number}}</a></li>
-  
+  <!-- Display current page number and all pages available -->
+  {% for pageNo in page_object.paginator.page_range %}
+    {% if page_object.number == pageNo %}
+      <li name= "page" class="page-item active"><a class="page-link">{{pageNo}}</a></li>
+    {% else %}
+      <li name= "page" class="page-item"><a class="page-link" href="?page={{pageNo}}">{{pageNo}}</a></li>
+    {% endif %}
+  {% endfor %}
   <!--
     <li class="page-item"><a class="page-link" href="#">2</a></li>
     <li class="page-item"><a class="page-link" href="#">3</a></li> -->
