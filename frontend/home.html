@@ -14,15 +14,15 @@
 </div>
 
 <!-- Question Card -->
-{% for question in all_qns %}
+{% for question in page_object %}
 <div class="container question-card">
   <div class="card mb-3">
     <div class="card-body">
       <h4 class="card-title">{{question.title}}</h4>
       <p class="card-title">{{question.detail|slice:":80"}}...</p>
       <p>
-        <a href="" class="mr-2">{{question.user}}</a>
-        <a href="/answers/{{question.title}}/" class="mr-2">5 answers</a>
+        <a href="" class="mr-2">{{question.AskedBy}}</a>
+        <a href="answers/{{question.title}}" class="mr-2">5 answers</a>
         <a href="" class="mr-2">10 comments</a>
       </p>
 
@@ -42,11 +42,22 @@
 <!-- Pagination -->
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+  <!-- checking if it has Previous page -->  
+  {% if page_object.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{page_object.previous_page_number}}">Previous</a></li>
+  {% endif %}
+  
+  <!-- Display current page number -->
+    <li name= "page" class="page-item active"><a class="page-link">{{page_object.number}}</a></li>
+  
+  <!--
     <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+  
+  <!-- checking if it has Next page -->
+  {% if page_object.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{page_object.next_page_number}}">Next</a></li>
+  {% endif %}
   </ul>
 </nav>
 
