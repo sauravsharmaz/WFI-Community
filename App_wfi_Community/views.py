@@ -10,8 +10,17 @@ from django.core.paginator import Paginator
 
 def index(request):
   request.session.flush()
-  # get all objects of question model
-  all_qns= Question.objects.all().order_by('id')
+  # check if user is typing something
+  if 'searchfieldText' in request.GET:
+    usrQuery= request.GET['searchfieldText']
+    # search the usrQuery
+    searchRes= Question.objects.filter(title__icontains= usrQuery)
+    # sort the result by latest
+    all_qns= searchRes.order_by('-id')
+  else:
+    # get all objects of question model with latest as first
+    all_qns= Question.objects.all().order_by('-id')
+  
   # passing all questions to paginator with 4 question for one page
   paginator= Paginator(all_qns, 4, orphans=2)
   # get page no from home.html element with name= 'page'
