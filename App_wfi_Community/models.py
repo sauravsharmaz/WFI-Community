@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Question(models.Model):
     """(User Question Model)"""
-    AskedBy = models.ForeignKey(User, on_delete=models.CASCADE)
+    AskedBy = models.ForeignKey(User, on_delete=models.CASCADE, default="Anonymous User")
     title = models.CharField(max_length=500)
     detail = models.TextField()
     ask_time = models.DateTimeField(auto_now_add=True)
