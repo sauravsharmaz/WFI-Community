@@ -1,5 +1,5 @@
 {% extends "basic.html" %}
-
+{% load humanize %}
 {% block title %}WFI-Community{% endblock title %}
 {% block body %}
 
@@ -19,24 +19,17 @@
 <div class="container question-card">
   <div class="card mb-3">
     <div class="card-body">
-      <h4 class="card-title">{{question.title}}</h4>
+      <h4 class="card-title">Q.{{question.title}}</h4>
       <p class="card-title">{{question.detail|slice:":80"}}...</p>
       <p>
         <a href="" class="mr-2">{{question.AskedBy}}</a>
-        <a href="answers/{{question.title}}" class="mr-2">5 answers</a>
+        <a href="detail/{{question.id}}" class="mr-2">5 answers</a>
         <a href="" class="mr-2">10 comments</a>
-        <a href="" class="mr-2">{{question.ask_time}}</a>
+        <a href="" class="mr-2">{{question.ask_time|naturaltime}}</a>
       </p>
-
-      <form hidden method="get">
-        <input type="number" name="question_title" value={{question.title}}>
-        <button id="submit" type="submit">submit</button>
-      </form>
-      <input hidden id="submitStop">
     </div>
   </div>
 </div>
-<input hidden method="get" id="question_title" name="question_title" value="{{question.id}}">
 {% endfor %}
 
 
@@ -57,10 +50,6 @@
       <li name= "page" class="page-item"><a class="page-link" href="?page={{pageNo}}">{{pageNo}}</a></li>
     {% endif %}
   {% endfor %}
-  <!--
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li> -->
-  
   <!-- checking if it has Next page -->
   {% if page_object.has_next %}
     <li class="page-item"><a class="page-link" href="?page={{page_object.next_page_number}}">Next</a></li>
