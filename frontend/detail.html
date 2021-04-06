@@ -1,0 +1,37 @@
+{% extends "basic.html" %}
+{% load humanize %}
+{% block title %}WFI-Community|Detail{% endblock title %}
+{% block body %}
+
+<!--question card-->
+<div class="container question-card my-5">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4 class="card-title">Q.{{RequestedQuestion}}</h4>
+      <p class="card-title">{{RequestedQuestion.detail}}</p>
+      <p>
+        <a href="" class="mr-2">{{RequestedQuestion.AskedBy}}</a>
+        <a class="mr-2">5 answers</a>
+        <a href="" class="mr-2">10 comments</a>
+        <a href="" class="mr-2">{{RequestedQuestion.ask_time|naturaltime}}</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!--Answer card-->
+{% for ansOfRequestedQtn in ansOfRequestedQtn  %}
+<div class="container question-card my-5">
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="card-title">Answer: {{ansOfRequestedQtn}}</p>
+      <p>
+        <a href="" class="mr-2">{{ansOfRequestedQtn.AnsGiver}}</a>
+        <a href="" class="mr-2">10 comments</a>
+        <a href="" class="mr-2">{{ansOfRequestedQtn.post_time|naturaltime}}</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

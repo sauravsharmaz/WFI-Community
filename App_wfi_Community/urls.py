@@ -4,5 +4,5 @@ from App_wfi_Community import views
 urlpatterns = [
     path('',views.index),
     # path('/answers/<slug:qtn_title>',views.ans),
-    path('answers/<slug:idl>', views.ans),
+    path('detail/<int:questionID>', views.detail),
 ]

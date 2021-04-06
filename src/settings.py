@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App_wfi_Community',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

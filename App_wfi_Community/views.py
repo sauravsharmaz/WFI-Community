@@ -34,12 +34,9 @@ def index(request):
   return render(request,'home.html', data) 
 
 
-def ans(request,idl):
+def detail(request,questionID):
   request.session.flush()
-  print("the slig param is ====>",idl)
-  # all_ans= Answer.objects.all()
-  # mainAns= Answer.objects.get(related_question__title= qtn_title)
-  # print("the filter is working and the value is=====>",mainAns)
-  # mainAn= Answer.objects.filter(related_question__title= "what is django.?")
-  # print("the answer is ===> ", mainAn)
-  return render(request, 'answers.html')
+  RequestedQuestion= Question.objects.get(id= questionID)
+  ansOfRequestedQtn= Answer.objects.filter(related_question= RequestedQuestion)
+  data= {'RequestedQuestion':RequestedQuestion,'ansOfRequestedQtn':ansOfRequestedQtn}
+  return render(request, 'detail.html', data)
