@@ -3,51 +3,55 @@
 {% block title %}WFI-Community|Detail{% endblock title %}
 {% block body %}
 
-<!--question card-->
-<div class="container question-card my-5">
-  <div class="card mb-3">
-    <div class="card-body">
-      <h4 class="card-title">Q.{{RequestedQuestion}}</h4>
-      <p class="card-title">{{RequestedQuestion.detail}}</p>
-      <p>
-        <a href="" class="mr-2">{{RequestedQuestion.AskedBy}}</a>
-        <a class="mr-2">5 answers</a>
-        <a href="" class="mr-2">10 comments</a>
-        <a href="" class="mr-2">{{RequestedQuestion.ask_time|naturaltime}}</a>
-      </p>
+
+<div class="container">
+  <!--question card-->
+  <div class="container question-card my-5">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h4 class="card-title">Q.{{RequestedQuestion}}</h4>
+        <p class="card-title">{{RequestedQuestion.detail}}</p>
+        <p>
+          <a href="" class="mr-2">{{RequestedQuestion.AskedBy}}</a>
+          <a class="mr-2">5 answers</a>
+          <a href="" class="mr-2">10 comments</a>
+          <a href="" class="mr-2">{{RequestedQuestion.ask_time|naturaltime}}</a>
+        </p>
+      </div>
     </div>
+  </div>
+  <!--end question card-->
+
+
+  <div class="container">
+    <!--Answer card-->
+    {% for ansOfRequestedQtn in ansOfRequestedQtn  %}
+    <div class="row mt-5 mb-5">
+      <div class="col-1">
+        <div class="upvote">
+          <strong>213</strong><br />
+          <span class="text-success mr-2">
+            <i class="fas fa-arrow-circle-up fa-2x"></i>
+          </span>
+        </div>
+        <div class="downvote mt-1">
+          <span class="text-danger">
+            <i class="fas fa-arrow-circle-down fa-2x"></i>
+          </span><br/>
+          <strong>21</strong>
+        </div>
+      </div>
+      <div class="col-11">
+        <p>{{ansOfRequestedQtn.detail}}</p>
+        <p>
+          <a href="" class="mr-2">{{ansOfRequestedQtn.AnsGiver}}</a>
+          <a href="" class="mr-2">10 comments</a>
+          <a href="" class="mr-2">{{ansOfRequestedQtn.post_time|naturaltime}}</a>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+    {% endblock %}
+    <!--Answer Card Ended-->
   </div>
 </div>
-<!--end question card-->
-
-
-
-<!--Answer card-->
-{% for ansOfRequestedQtn in ansOfRequestedQtn  %}
-<div class="row mt-5 mb-5">
-  <div class="col-1">
-    <div class="upvote">
-      <strong>213</strong><br/>
-      <span class="text-success">
-        <i class="fas fa-arrow-circle-up fa-2x"></i>
-      </span>
-    </div>
-    <div class="downvote mt-1">
-      <span class="text-danger">
-        <i class="fas fa-arrow-circle-down fa-2x"></i>
-      </span><br/>
-    <strong>21</strong>
-    </div>
-  </div>
-  <div class="col-11">
-    <p>{{ansOfRequestedQtn.detail}}</p>
-    <p>
-      <a href="" class="mr-2">{{ansOfRequestedQtn.AnsGiver}}</a>
-      <a href="" class="mr-2">10 comments</a>
-      <a href="" class="mr-2">{{ansOfRequestedQtn.post_time|naturaltime}}</a>
-    </p>
-  </div>
-</div>
-{% endfor %}
-{% endblock %}
-<!--Answer Card Ended-->
