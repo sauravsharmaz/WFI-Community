@@ -18,20 +18,36 @@
     </div>
   </div>
 </div>
+<!--end question card-->
+
+
 
 <!--Answer card-->
 {% for ansOfRequestedQtn in ansOfRequestedQtn  %}
-<div class="container question-card my-5">
-  <div class="card mb-3">
-    <div class="card-body">
-      <p class="card-title">Answer: {{ansOfRequestedQtn}}</p>
-      <p>
-        <a href="" class="mr-2">{{ansOfRequestedQtn.AnsGiver}}</a>
-        <a href="" class="mr-2">10 comments</a>
-        <a href="" class="mr-2">{{ansOfRequestedQtn.post_time|naturaltime}}</a>
-      </p>
+<div class="row mt-5 mb-5">
+  <div class="col-1">
+    <div class="upvote">
+      <strong>213</strong><br/>
+      <span class="text-success">
+        <i class="fas fa-arrow-circle-up fa-2x"></i>
+      </span>
     </div>
+    <div class="downvote mt-1">
+      <span class="text-danger">
+        <i class="fas fa-arrow-circle-down fa-2x"></i>
+      </span><br/>
+    <strong>21</strong>
+    </div>
+  </div>
+  <div class="col-11">
+    <p>{{ansOfRequestedQtn.detail}}</p>
+    <p>
+      <a href="" class="mr-2">{{ansOfRequestedQtn.AnsGiver}}</a>
+      <a href="" class="mr-2">10 comments</a>
+      <a href="" class="mr-2">{{ansOfRequestedQtn.post_time|naturaltime}}</a>
+    </p>
   </div>
 </div>
 {% endfor %}
 {% endblock %}
+<!--Answer Card Ended-->
