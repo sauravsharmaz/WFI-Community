@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render
 from django.http import request
 # import the models
-from .models import Question, Answer
+from .models import Question, Answer, Comment
 # import paginator for pagination
 from django.core.paginator import Paginator
 
@@ -37,6 +37,12 @@ def index(request):
 def detail(request,questionID):
   request.session.flush()
   RequestedQuestion= Question.objects.get(id= questionID)
+  Question_tags= RequestedQuestion.Tags
+  if Question_tags != None:
+    Tags= Question_tags.split(',')
+  else:
+    Tags= Question_tags
   ansOfRequestedQtn= Answer.objects.filter(related_question= RequestedQuestion)
-  data= {'RequestedQuestion':RequestedQuestion,'ansOfRequestedQtn':ansOfRequestedQtn}
+  relatedComment= Comment.objects.filter(answer= ansOfRequestedQtn[0])
+  data= {'RequestedQuestion':RequestedQuestion,'ansOfRequestedQtn':ansOfRequestedQtn, 'relatedComment':relatedComment, 'Tags':Tags}
   return render(request, 'detail.html', data)

@@ -11,8 +11,13 @@ class AnswerAdmin(admin.ModelAdmin):
     list_display= ('detail','related_question','AnsGiver')
     search_fields= ('detail','related_question__title','AnsGiver__username')
 
+class Comment_Admin(admin.ModelAdmin):
+    list_display= ('detail','commented_By')
+    search_fields= ('detail', 'commented_By__username','answer__detail')
+
+
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
-admin.site.register(Comment)
+admin.site.register(Comment, Comment_Admin)
 admin.site.register(Upvote)
 admin.site.register(DownVote)
