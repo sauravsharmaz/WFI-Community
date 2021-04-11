@@ -24,7 +24,7 @@
 
   <div class="container">
     <!--Answer card-->
-  {% for ansOfRequestedQtn in ansOfRequestedQtn  %}
+  {% for ans in ans_A  %}
     <div class="row mt-5 mb-5">
       <div class="col-1">
         <div class="upvote">
@@ -40,50 +40,35 @@
           <strong>21</strong>
         </div>
       </div>
+      <!--Answer Section-->
       <div class="col-11">
-        <p>{{ansOfRequestedQtn.detail}}</p>
+        <p>{{ans.detail}}</p>
         <p>
-          <a href="" class="mr-2">{{ansOfRequestedQtn.AnsGiver}}</a>
-          {% if relatedComment.0.answer == ansOfRequestedQtn.detail %}
-          <a href="" class="mr-2">{{relatedComment|length}} Comments</a>
-          {% else %}
-          <a href="" class="mr-2">0 Comments</a>
-          {% endif %}
-          <a href="" class="mr-2">{{ansOfRequestedQtn.post_time|naturaltime}}</a>
+          <a href="" class="mr-2">{{ans.AnsGiver}}</a>
+          <a href="" class="mr-2">{{ans.Comment|length}} Comments</a>
+          <a href="" class="mr-2">{{ans.post_time|naturaltime}}</a>
+        </p>
+        <p>
+          Tags:
+          {% for tags in Tags %}
+          <a href="#" class="badge badge-secondary" >{{tags}}</a>
+          {% endfor %}
         </p>
         <br />
+        <!--comment section-->
         <h3>Comments</h3>
         <hr />
-        {% for comment in relatedComment %}
-        {% if ansOfRequestedQtn.detail == comment.answer %}
-        <p>
-          {{comment.detail}}
-        </p>
-        <p>
-          <a class="mr-2">{{comment.post_time|naturaltime}}</a>
-          <a class="mr-2">{{comment.commented_By}}</a>
-        </p>
-        {% else %}
-        <p>No Comments</p>
-        {% endif %}
+        {% for comment in ans.comment_set.all %}
+        <div class="card my-4">
+          <div class="card-body" class="commentBox">
+            <p>{{comment.detail}}</p>
+          </div>
+        </div>
         {% endfor %}
       </div>
       </div>
       <hr />
     {% endfor %}
-    
-    <!--Answer Card Ended-->
   </div>
 </div>
-
-
-<!--test-->
-<h1>the comment is </h1>
-<p>{{relatedComment|length}}</p>
-<p>1{{relatedComment.0.answer}}</p>
-<p>2 {{ansOfRequestedQtn.0.detail}}</p>
-<p>3</p>
-{% endblock %}
-{% if {{relatedComment.0.answer}} == {{ansOfRequestedQtn.0.detail}} %}
-<p>True</p>
-{% endif %}
+{% endblock %} 
