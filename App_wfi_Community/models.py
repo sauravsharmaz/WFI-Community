@@ -2,6 +2,7 @@ from django.db import models
 # importing user
 from django.contrib.auth.models import User
 
+# we used foreign key for many to one relationship
 class Question(models.Model):
     """(User Question Model)"""
     AskedBy = models.ForeignKey(User, on_delete=models.CASCADE, default="Anonymous User")
