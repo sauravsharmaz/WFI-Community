@@ -1,15 +1,32 @@
 from django.shortcuts import render
 from django.shortcuts import render
 from django.http import request
-# import the models
+# import the models 
 from .models import Question, Answer, Comment
 # import paginator for pagination
 from django.core.paginator import Paginator
 
 # Create your views here.
 
+# functions to called in views
+
+def getTags(RequestedQuestion):
+  # get tags from Question model
+  Question_tags= RequestedQuestion.Tags
+  # check if tag are not empty
+  if Question_tags != None:
+    Tags= Question_tags.split(',')
+  else:
+    Tags= Question_tags
+  # return the tags
+  return Tags
+
+
+
+
+# templates functions
+
 def index(request):
-  request.session.flush()
   # check if user is typing something
   if 'searchfieldText' in request.GET:
     usrQuery= request.GET['searchfieldText']
@@ -33,16 +50,18 @@ def index(request):
   data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page_object}
   return render(request,'home.html', data) 
 
-
+ 
 def detail(request,questionID):
-  request.session.flush()
+  # get the Question from ID
   RequestedQuestion= Question.objects.get(id= questionID)
-  Question_tags= RequestedQuestion.Tags
-  if Question_tags != None:
-    Tags= Question_tags.split(',')
-  else:
-    Tags= Question_tags
-  ansOfRequestedQtn= Answer.objects.filter(related_question= RequestedQuestion)
-  relatedComment= Comment.objects.filter(answer= ansOfRequestedQtn[0])
-  data= {'RequestedQuestion':RequestedQuestion,'ansOfRequestedQtn':ansOfRequestedQtn, 'relatedComment':relatedComment, 'Tags':Tags}
+  # get the tags
+  Tags= getTags(RequestedQuestion)
+  # get the Answer
+  ans_A= Answer.objects.filter(related_question= RequestedQuestion)
+  # pass the info to data 
+  data= {
+    'RequestedQuestion':RequestedQuestion,
+    'ans_A':ans_A,
+    'Tags':Tags,
+    }
   return render(request, 'detail.html', data)
