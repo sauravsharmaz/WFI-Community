@@ -33,22 +33,25 @@ def get_save_form_data(RequestedQuestion, request, fom):
   ans= Answer(AnsGiver= ansGiver,related_question= related_question,detail=detail)
   ans.save()
 
-
-
-# functions to process and send data to templates
-
-def index(request):
-  # check if user is typing something
+def search(request):
   if 'searchfieldText' in request.GET:
     usrQuery= request.GET['searchfieldText']
     # search the usrQuery
     searchRes= Question.objects.filter(title__icontains= usrQuery)
     # sort the result by latest
     all_qns= searchRes.order_by('-id')
+    return all_qns
   else:
     # get all objects of question model with latest as first
     all_qns= Question.objects.all().order_by('-id')
-  
+    return all_qns
+
+
+# functions to process and send data to templates
+
+def index(request):
+  # check if user is typing something
+  all_qns= search(request)  
   # passing all questions to paginator with 4 question for one page
   paginator= Paginator(all_qns, 4, orphans=2)
   # get page no from home.html element with name= 'page'

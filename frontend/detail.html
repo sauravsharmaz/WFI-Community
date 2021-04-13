@@ -5,6 +5,18 @@
 
 
 <div class="container">
+  <!-- search bar -->
+    <form action="" method="get">
+        <div class="container py-3 row">
+          <div class="col-md-8 offset-2">
+            <div class="input-group">
+              <input name="searchfieldText" type="text" class="form-control" placeholder="Search">
+              <button class="btn btn-danger" type="submit">Search</button>
+            </div>
+          </div>
+        </div>
+        </form>
+
   <!--question card-->
   <div class="container question-card my-5">
     <div class="card mb-3">
@@ -48,15 +60,17 @@
         <p>{{ans.detail}}</p>
         <p>
         {% with ans.comment_set.all as comentSet %}
-          <a href="" class="mr-2">{{ans.AnsGiver}}</a>
-          <a href="" class="mr-2">{{comentSet|length}} Comments</a>
-          <a href="" class="mr-2">{{ans.post_time|naturaltime}}</a>
+          <button href="" class="mr-2 btn btn-warning btn-sm">{{ans.AnsGiver}}</button>
+          <button href="" class="mr-2 btn btn-primary btn-sm">Comments<span class="badge bg-danger">{{comentSet|length}}</span></button>
+          <button href="" class="mr-2 btn btn-success btn-sm">{{ans.post_time|naturaltime}}</button>
         </p>{% endwith %}
         <p>
+          {% if Tags %}
           Tags:
           {% for tags in Tags %}
-          <a href="#" class="badge badge-secondary" >{{tags}}</a>
+          <button id="tagsColor" href="#" class="badge badge-secondary" >{{tags}}</button>
           {% endfor %}
+          {% endif %}
         </p>
         <br />
         <!--comment section-->
@@ -77,7 +91,7 @@
         <h6 class="card-header">Add Comment</h6>
         <form action="/saveComment/{{ans.id}}/{{RequestedQuestion.id}}" method="post">{% csrf_token %}
           {{commentForm.as_p}}
-          <button type="submit" value="submit">Comment</button>
+          <button class="btn btn-info" type="submit" value="submit">Comment</button>
         </form>
       </div>
       </div>
