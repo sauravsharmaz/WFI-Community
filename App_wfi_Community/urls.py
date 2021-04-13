@@ -3,6 +3,6 @@ from App_wfi_Community import views
 
 urlpatterns = [
     path('',views.index),
-    # path('/answers/<slug:qtn_title>',views.ans),
-    path('detail/<int:questionID>', views.detail),
+    path('detail/<int:questionID>', views.detail), 
+    path('writeAns/<int:questionID>',views.writeAns), 
 ]
