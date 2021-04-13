@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import render
-from django.http import request, HttpResponseRedirect
+from django.http import request, HttpResponseRedirect, HttpResponse
 # import the models 
 from .models import Question, Answer, Comment
 # import paginator for pagination
 from django.core.paginator import Paginator
 # import forms
-from .forms import AddAns, Write_Answer_form
+from .forms import Write_Answer_form, CommentForm
 # import user
 from django.contrib.auth.models import User
 
@@ -69,11 +69,14 @@ def detail(request,questionID):
   Tags= getTags(RequestedQuestion)
   # get the Answer
   ans_A= Answer.objects.filter(related_question= RequestedQuestion)
+  # get the comment form
+  commentform= CommentForm()
   # pass the info to data 
   data= {
     'RequestedQuestion':RequestedQuestion,
     'ans_A':ans_A,
     'Tags':Tags,
+    'commentForm':commentform,
     }
   return render(request, 'detail.html', data)
 
@@ -97,4 +100,19 @@ def writeAns(request,questionID):
     fom= Write_Answer_form()
     data= {'form':fom}
     return render(request, 'writeAns.html', data)
+
+def saveComment(request, ansID, questionID):  
+  if request.method == 'POST':
+    fom= CommentForm(request.POST)
+    if fom.is_valid():
+      answer= Answer.objects.get(id=ansID)
+      commented_By= User.objects.get(pk= request.user.id)
+      detail= fom.cleaned_data['detail']
+      comment= Comment(answer=answer,commented_By=commented_By,detail=detail)
+      comment.save()
+      # redirect the user to previous page
+      url= '/detail/'+ str(questionID)
+      return HttpResponseRedirect(url)
+
+
 
