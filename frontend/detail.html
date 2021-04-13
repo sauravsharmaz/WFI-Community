@@ -12,10 +12,12 @@
         <h4 class="card-title">Q.{{RequestedQuestion}}</h4>
         <p class="card-title">{{RequestedQuestion.detail}}</p>
         <p>
+        {% with RequestedQuestion.answer_set.all as ansSet %}
           <p class="mr-2">Asked By: {{RequestedQuestion.AskedBy}}</p>
-          <a class="mr-2">{{ansOfRequestedQtn|length}} Answers</a>
+          <a class="mr-2">{{ansSet|length}} Answers</a>
           <a href="" class="mr-2">{{RequestedQuestion.ask_time|naturaltime}}</a>
           <a href="/writeAns/{{RequestedQuestion.id}}" class="mr-2">Write Answer</a>
+          {% endwith %}
         </p>
       </div>
     </div>
