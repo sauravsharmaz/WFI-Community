@@ -22,11 +22,12 @@
       <h4 class="card-title">Q.{{question.title}}</h4>
       <p class="card-title">{{question.detail|slice:":80"}}...</p>
       <p>
+        {% with question.answer_set.all as ansSet %}
         <a href="" class="mr-2">{{question.AskedBy}}</a>
-        <a href="detail/{{question.id}}" class="mr-2">5 answers</a>
-        <a href="" class="mr-2">10 comments</a>
+        <a href="detail/{{question.id}}" class="mr-2">{{ansSet|length}} answers</a>
         <a href="" class="mr-2">{{question.ask_time|naturaltime}}</a>
         <a href="/writeAns/{{question.id}}" class="mr-2">Write Answer</a>
+        {% endwith %}
       </p>
     </div>
   </div>
