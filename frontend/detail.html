@@ -15,6 +15,7 @@
           <p class="mr-2">Asked By: {{RequestedQuestion.AskedBy}}</p>
           <a class="mr-2">{{ansOfRequestedQtn|length}} Answers</a>
           <a href="" class="mr-2">{{RequestedQuestion.ask_time|naturaltime}}</a>
+          <a href="/writeAns/{{RequestedQuestion.id}}" class="mr-2">Write Answer</a>
         </p>
       </div>
     </div>
@@ -44,10 +45,11 @@
       <div class="col-11">
         <p>{{ans.detail}}</p>
         <p>
+        {% with ans.comment_set.all as comentSet %}
           <a href="" class="mr-2">{{ans.AnsGiver}}</a>
-          <a href="" class="mr-2">{{ans.Comment|length}} Comments</a>
+          <a href="" class="mr-2">{{comentSet|length}} Comments</a>
           <a href="" class="mr-2">{{ans.post_time|naturaltime}}</a>
-        </p>
+        </p>{% endwith %}
         <p>
           Tags:
           {% for tags in Tags %}
@@ -57,17 +59,29 @@
         <br />
         <!--comment section-->
         <h3>Comments</h3>
-        <hr />
+        <hr/>
         {% for comment in ans.comment_set.all %}
         <div class="card my-4">
           <div class="card-body" class="commentBox">
             <p>{{comment.detail}}</p>
+            <a href="#">{{comment.commented_By}}</a>
           </div>
         </div>
         {% endfor %}
       </div>
+      <!-- comment form -->
+      <div class="card my-3">
+        <h6 class="card-header">Add Comment</h6>
+        <div class="card-body">
+        <form action="saveComment" method="post">{% csrf_token %}
+          <textarea name="comment" class="form-control"></textarea>
+          <input hidden value="{{ans.id}}" name="answerid" class="form-control">
+          <button type="submit" class="btn btn-dark my-3">Comment</button>
+        </form>
+        </div>
       </div>
-      <hr />
+      </div>
+      <hr/>
     {% endfor %}
   </div>
 </div>
