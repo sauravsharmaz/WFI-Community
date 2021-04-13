@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render
-from django.http import request, HttpResponse
+from django.http import request, HttpResponseRedirect
 # import the models 
 from .models import Question, Answer, Comment
 # import paginator for pagination
@@ -25,10 +25,17 @@ def getTags(RequestedQuestion):
   # return the tags
   return Tags
 
+def get_save_form_data(RequestedQuestion, request, fom):
+  """get data from form & save to DB"""
+  related_question= RequestedQuestion
+  detail= fom.cleaned_data['detail']
+  ansGiver= User.objects.get(pk= request.user.id)
+  ans= Answer(AnsGiver= ansGiver,related_question= related_question,detail=detail)
+  ans.save()
 
 
 
-# templates functions
+# functions to process and send data to templates
 
 def index(request):
   # check if user is typing something
@@ -71,29 +78,22 @@ def detail(request,questionID):
   return render(request, 'detail.html', data)
 
 
-def get_save_form_data(RequestedQuestion, request, fom):
-  related_question= RequestedQuestion
-  detail= fom.cleaned_data['detail']
-  ansGiver= User.objects.get(pk= request.user.id)
-  ans= Answer(AnsGiver= ansGiver,related_question= related_question,detail=detail)
-  ans.save()
+
 
 def writeAns(request,questionID):
   # get the Question from ID
   RequestedQuestion= Question.objects.get(id= questionID)
-  # answer= Answer.objects.filter(related_question= RequestedQuestion)
+  # check if there is a post request from template
   if request.method == 'POST':
+    # get all the form data with post request into a variable
     fom= Write_Answer_form(request.POST)
     if fom.is_valid():
       get_save_form_data(RequestedQuestion, request, fom)
-      # print('form validated')
-      # print('detail ==> ',fom.cleaned_data['detail'])
-      # print('related_question ==> ',fom.cleaned_data['related_question'])
-      # print('related_question fetched  ==> ',RequestedQuestion.title)
-      # print('AnsGiver ==> ',fom.cleaned_data['AnsGiver'])
-      # print('AnsGiver fetched ==> ', request.user.username)
-      return HttpResponse('check terminal')
+      # make a string url to pass as a arguments
+      url= '/detail/'+ str(questionID)
+      return HttpResponseRedirect(url)
   else:
+    # send blank form to template
     fom= Write_Answer_form()
     data= {'form':fom}
     return render(request, 'writeAns.html', data)
