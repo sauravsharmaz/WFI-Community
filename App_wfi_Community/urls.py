@@ -5,4 +5,5 @@ urlpatterns = [
     path('',views.index),
     path('detail/<int:questionID>', views.detail), 
     path('writeAns/<int:questionID>',views.writeAns), 
+    path('saveComment/<int:ansID>/<int:questionID>',views.saveComment), 
 ]
