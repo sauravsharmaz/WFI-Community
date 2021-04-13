@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from django.shortcuts import render
-from django.http import request
+from django.http import request, HttpResponse
 # import the models 
 from .models import Question, Answer, Comment
 # import paginator for pagination
 from django.core.paginator import Paginator
+# import forms
+from .forms import AddAns, Write_Answer_form
+# import user
+from django.contrib.auth.models import User
 
 # Create your views here.
 
-# functions to called in views
+# functions to called in views 
 
 def getTags(RequestedQuestion):
   # get tags from Question model
@@ -65,3 +69,32 @@ def detail(request,questionID):
     'Tags':Tags,
     }
   return render(request, 'detail.html', data)
+
+
+def get_save_form_data(RequestedQuestion, request, fom):
+  related_question= RequestedQuestion
+  detail= fom.cleaned_data['detail']
+  ansGiver= User.objects.get(pk= request.user.id)
+  ans= Answer(AnsGiver= ansGiver,related_question= related_question,detail=detail)
+  ans.save()
+
+def writeAns(request,questionID):
+  # get the Question from ID
+  RequestedQuestion= Question.objects.get(id= questionID)
+  # answer= Answer.objects.filter(related_question= RequestedQuestion)
+  if request.method == 'POST':
+    fom= Write_Answer_form(request.POST)
+    if fom.is_valid():
+      get_save_form_data(RequestedQuestion, request, fom)
+      # print('form validated')
+      # print('detail ==> ',fom.cleaned_data['detail'])
+      # print('related_question ==> ',fom.cleaned_data['related_question'])
+      # print('related_question fetched  ==> ',RequestedQuestion.title)
+      # print('AnsGiver ==> ',fom.cleaned_data['AnsGiver'])
+      # print('AnsGiver fetched ==> ', request.user.username)
+      return HttpResponse('check terminal')
+  else:
+    fom= Write_Answer_form()
+    data= {'form':fom}
+    return render(request, 'writeAns.html', data)
+
