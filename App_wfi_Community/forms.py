@@ -2,10 +2,10 @@ from django.core import validators
 from django import forms
 from .models import *
 
-class AddAns(forms.ModelForm):
+class CommentForm(forms.ModelForm):
 	class Meta:
-		model= Answer
-		fields= ['related_question','detail','AnsGiver']
+		model= Comment
+		fields= ['detail']
 
 
 class Write_Answer_form(forms.ModelForm):

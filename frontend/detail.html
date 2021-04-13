@@ -67,6 +67,7 @@
           <div class="card-body" class="commentBox">
             <p>{{comment.detail}}</p>
             <a href="#">{{comment.commented_By}}</a>
+            <a href="#">{{comment.post_time|naturaltime}}</a>
           </div>
         </div>
         {% endfor %}
@@ -74,13 +75,10 @@
       <!-- comment form -->
       <div class="card my-3">
         <h6 class="card-header">Add Comment</h6>
-        <div class="card-body">
-        <form action="saveComment" method="post">{% csrf_token %}
-          <textarea name="comment" class="form-control"></textarea>
-          <input hidden value="{{ans.id}}" name="answerid" class="form-control">
-          <button type="submit" class="btn btn-dark my-3">Comment</button>
+        <form action="/saveComment/{{ans.id}}/{{RequestedQuestion.id}}" method="post">{% csrf_token %}
+          {{commentForm.as_p}}
+          <button type="submit" value="submit">Comment</button>
         </form>
-        </div>
       </div>
       </div>
       <hr/>
