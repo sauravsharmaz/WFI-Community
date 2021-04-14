@@ -6,3 +6,55 @@
 #tagsColor{
   color: black;
 }
+
+div p .deletbtn{
+  color: bisque;
+  background-color: crimson;
+  border: 2px solid black;
+}
+
+div div form .comment-btn{
+  background-color: darkgreen;
+  color: aliceblue;
+  border: 1px solid black;
+}
+
+div div .cmnt-heading{
+  background-color: goldenrod;
+  color: black;
+  border-bottom-color: black;
+  margin-bottom: 5px;
+}
+
+div .comnt-main-head{
+  background-color: rgb(3, 3, 58);
+  border: 1px solid black;
+  color: white;
+}
+
+div div div .question-head{
+  background-color: goldenrod;
+  border: 1px solid black;
+}
+
+div div div .qdetail-icon{
+  margin-left: 5px;
+}
+
+div div div .qdetail{
+  background-color: lightgoldenrodyellow;
+}
+
+#cmntdetail{
+  background-color: rgb(227, 240, 245);
+}
+
+#ansDetails{
+  border: 1px solid red;
+  background-color: rgb(255, 198, 198);
+}
+
+#ansHead{
+  border-bottom-color: black;
+  color: darkred;
+}

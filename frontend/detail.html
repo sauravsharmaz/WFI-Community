@@ -21,14 +21,19 @@
   <div class="container question-card my-5">
     <div class="card mb-3">
       <div class="card-body">
-        <h4 class="card-title">Q.{{RequestedQuestion}}</h4>
-        <p class="card-title">{{RequestedQuestion.detail}}</p>
+        <h4 class="card-title question-head">Q.{{RequestedQuestion}}</h4>
+        <p class="card-title qdetail">{{RequestedQuestion.detail}}</p>
         <p>
         {% with RequestedQuestion.answer_set.all as ansSet %}
-          <p class="mr-2">Asked By: {{RequestedQuestion.AskedBy}}</p>
-          <a class="mr-2">{{ansSet|length}} Answers</a>
-          <a href="" class="mr-2">{{RequestedQuestion.ask_time|naturaltime}}</a>
+        <p class="mr-2">
+          <i class="fas fa-user-circle text-primary qdetail-icon"></i> {{RequestedQuestion.AskedBy}}
+          <i class="fas fa-file-contract text-warning qdetail-icon"></i>
+          {{ansSet|length}} Answers
+          <i class="fas fa-history text-success qdetail-icon"></i>
+          {{RequestedQuestion.ask_time|naturaltime}}
+          <i class="fas fa-edit text-danger qdetail-icon"></i>
           <a href="/writeAns/{{RequestedQuestion.id}}" class="mr-2">Write Answer</a>
+        </p>
           {% endwith %}
         </p>
       </div>
@@ -39,6 +44,7 @@
 
   <div class="container">
     <!--Answer card-->
+    <h1 id="ansHead">Answers <i class="fas fa-book-reader fa-2x text-danger"></i></h1>
   {% for ans in ans_A  %}
     <div class="row mt-5 mb-5">
       <div class="col-1">
@@ -57,12 +63,14 @@
       </div>
       <!--Answer Section-->
       <div class="col-11">
-        <p>{{ans.detail}}</p>
+        <p id="ansDetails">{{ans.detail}}</p>
         <p>
         {% with ans.comment_set.all as comentSet %}
           <button href="" class="mr-2 btn btn-warning btn-sm">{{ans.AnsGiver}}</button>
           <button href="" class="mr-2 btn btn-primary btn-sm">Comments<span class="badge bg-danger">{{comentSet|length}}</span></button>
           <button href="" class="mr-2 btn btn-success btn-sm">{{ans.post_time|naturaltime}}</button>
+          <a href="/update/{{ans.id}}" class="mr-2 btn btn-dark btn-sm">Edit Answer</a>
+          <a href="/delete/{{ans.id}}" class="mr-2 btn deletbtn btn-sm">Delete Answer</a>
         </p>{% endwith %}
         <p>
           {% if Tags %}
@@ -74,24 +82,27 @@
         </p>
         <br />
         <!--comment section-->
-        <h3>Comments</h3>
-        <hr/>
+        <h3 class="comnt-main-head">Comments</h3>
         {% for comment in ans.comment_set.all %}
         <div class="card my-4">
-          <div class="card-body" class="commentBox">
+          <div class="card-body" id="cmntdetail">
             <p>{{comment.detail}}</p>
-            <a href="#">{{comment.commented_By}}</a>
-            <a href="#">{{comment.post_time|naturaltime}}</a>
+            <p>
+              <i class="fas fa-user-circle text-primary qdetail-icon"></i>
+              {{comment.commented_By}}
+              <i class="fas fa-history text-success qdetail-icon"></i>
+              {{comment.post_time|naturaltime}}
+            </p>
           </div>
         </div>
         {% endfor %}
       </div>
       <!-- comment form -->
       <div class="card my-3">
-        <h6 class="card-header">Add Comment</h6>
+        <h6 class="card-header cmnt-heading">Add Comment</h6>
         <form action="/saveComment/{{ans.id}}/{{RequestedQuestion.id}}" method="post">{% csrf_token %}
           {{commentForm.as_p}}
-          <button class="btn btn-info" type="submit" value="submit">Comment</button>
+          <button class="btn comment-btn" type="submit" value="submit">Comment</button>
         </form>
       </div>
       </div>
