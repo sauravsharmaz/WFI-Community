@@ -9,7 +9,8 @@ from django.core.paginator import Paginator
 from .forms import Write_Answer_form, CommentForm
 # import user
 from django.contrib.auth.models import User
-
+# import timezone for update function
+from django.utils import timezone
 # Create your views here.
 
 # functions to called in views 
@@ -118,4 +119,33 @@ def saveComment(request, ansID, questionID):
       return HttpResponseRedirect(url)
 
 
+def update(request, ansID):
+  if request.method == 'POST':
+    fom= Write_Answer_form(request.POST)
+    if fom.is_valid():
+      answer= Answer.objects.filter(id= ansID)
+      # getting data for saving
+      ansGiver= User.objects.get(pk= request.user.id)
+      related_question= answer[0].related_question
+      detail= '[Edited] ' + fom.cleaned_data['detail']
+      post_time= timezone.now()
+      # saving to database (for update we need to add all fields including answer id and post time)
+      ansObj= Answer(id= ansID, AnsGiver=ansGiver,related_question=related_question,detail=detail,post_time=post_time)
+      ansObj.save()
+      # getting question id for redirecting the url
+      question= Question.objects.get(title= related_question)
+      url= '/detail/'+ str(question.id)
+      return HttpResponseRedirect(url)
+  else:
+    fom= Write_Answer_form()
+    data= {'form':fom}
+    return render(request, 'update.html',data)
 
+
+def deleteAns(request,ansID):
+  answerOb= Answer.objects.get(id= ansID)
+  question= Question.objects.get(title= answerOb.related_question)
+  answerOb.delete()
+  # url for redirection
+  url= '/detail/'+str(question.id)
+  return HttpResponseRedirect(url)
