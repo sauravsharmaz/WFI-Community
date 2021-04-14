@@ -8,7 +8,7 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields= ('title', 'detail','ask_time','AskedBy__username')
 
 class AnswerAdmin(admin.ModelAdmin):
-    list_display= ('detail','related_question','AnsGiver','id')
+    list_display= ('detail','related_question','AnsGiver','id','post_time')
     search_fields= ('detail','related_question__title','AnsGiver__username')
 
 class Comment_Admin(admin.ModelAdmin):
