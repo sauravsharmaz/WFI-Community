@@ -1,0 +1,11 @@
+{% extends 'basic.html' %}
+{% block title %}
+Edit Answer
+{% endblock title %}
+{% block body %}
+<h1>Edit your Answer</h1>
+<form action="" method="post">{% csrf_token %}
+{{form.as_p}}
+<button type="submit" value="submit">Save Answer</button>
+</form>
+{% endblock body %}
