@@ -3,8 +3,7 @@
 write Answer
 {% endblock title %}
 {% block body %}
-<h1>hello i am write ans</h1>
-<h1>below is form</h1>
+<h1>Write Answer <i class="fas fa-edit text-danger qdetail-icon fa-2x"></i></h1>
 
 <form action="" method="post">{% csrf_token %}
   {{form.as_p}}
