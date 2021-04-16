@@ -1,0 +1,56 @@
+{% extends 'basic.html' %}
+{% load humanize %}
+{% block title %}
+WFI|Search
+{% endblock title %}
+{% block body %}
+
+<!-- Question Card -->
+{% for question in all_qns %}
+<div class="container question-card">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4 class="card-title">Q.{{question.title}}</h4>
+      <p class="card-title">{{question.detail|slice:":80"}}...</p>
+      <p>
+        {% with question.answer_set.all as ansSet %}
+        <i class="fas fa-user-circle text-primary qdetail-icon"></i>
+        <a href="" class="mr-2">{{question.AskedBy}}</a>
+        <i class="fas fa-file-contract text-warning qdetail-icon"></i>
+        <a href="detail/{{question.id}}" class="mr-2">{{ansSet|length}} answers</a>
+        <i class="fas fa-history text-success qdetail-icon"></i>
+        <a href="" class="mr-2">{{question.ask_time|naturaltime}}</a>
+         <i class="fas fa-edit text-danger qdetail-icon"></i>
+        <a href="/writeAns/{{question.id}}" class="mr-2">Write Answer</a>
+        {% endwith %}
+      </p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{% comment %} <!-- Pagination -->
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+  <!-- checking if it has Previous page -->  
+  {% if page_object.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{page_object.previous_page_number}}">Previous</a></li>
+  {% endif %}
+  
+  <!-- Display current page number and all pages available -->
+  {% for pageNo in page_object.paginator.page_range %}
+    {% if page_object.number == pageNo %}
+      <li name= "page" class="page-item active"><a class="page-link">{{pageNo}}</a></li>
+    {% else %}
+      <li name= "page" class="page-item"><a class="page-link" href="?page={{pageNo}}">{{pageNo}}</a></li>
+    {% endif %}
+  {% endfor %}
+  <!-- checking if it has Next page -->
+  {% if page_object.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{page_object.next_page_number}}">Next</a></li>
+  {% endif %}
+  </ul>
+</nav> {% endcomment %}
+
+{% endblock body %}
