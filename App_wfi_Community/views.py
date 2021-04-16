@@ -15,7 +15,14 @@ from django.utils import timezone
 
 # functions to called in views 
 
+def getPageObject(request,all_qns):
+  """Returns the page object of Questions"""
+  paginator= Paginator(all_qns,4,orphans=3)
+  pageNo= request.GET.get('page')
+
+
 def getTags(RequestedQuestion):
+  """Returns the Tags with comma seprated(if available)"""
   # get tags from Question model
   Question_tags= RequestedQuestion.Tags
   # check if tag are not empty
@@ -34,35 +41,22 @@ def get_save_form_data(RequestedQuestion, request, fom):
   ans= Answer(AnsGiver= ansGiver,related_question= related_question,detail=detail)
   ans.save()
 
-def search(request):
-  if 'searchfieldText' in request.GET:
-    usrQuery= request.GET['searchfieldText']
-    # search the usrQuery
-    searchRes= Question.objects.filter(title__icontains= usrQuery)
-    # sort the result by latest
-    all_qns= searchRes.order_by('-id')
-    return all_qns
-  else:
-    # get all objects of question model with latest as first
-    all_qns= Question.objects.all().order_by('-id')
-    return all_qns
-
 
 # functions to process and send data to templates
 
 def index(request):
   # check if user is typing something
-  all_qns= search(request)  
+  all_qns= Question.objects.all() 
   # passing all questions to paginator with 4 question for one page
   paginator= Paginator(all_qns, 4, orphans=2)
   # get page no from home.html element with name= 'page'
   page_number= request.GET.get('page')
   # making page object
-  page_object= paginator.get_page(page_number)
+  page= paginator.get_page(page_number)
   # get all answer objects
   all_ans= Answer.objects.all()
   # pass all the data to dictionary
-  data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page_object}
+  data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page}
   return render(request,'home.html', data) 
 
  
@@ -118,7 +112,7 @@ def saveComment(request, ansID, questionID):
       url= '/detail/'+ str(questionID)
       return HttpResponseRedirect(url)
 
-
+# update the Answer
 def update(request, ansID):
   if request.method == 'POST':
     fom= Write_Answer_form(request.POST)
@@ -141,7 +135,7 @@ def update(request, ansID):
     data= {'form':fom}
     return render(request, 'update.html',data)
 
-
+# delete the answer
 def deleteAns(request,ansID):
   answerOb= Answer.objects.get(id= ansID)
   question= Question.objects.get(title= answerOb.related_question)
@@ -149,3 +143,20 @@ def deleteAns(request,ansID):
   # url for redirection
   url= '/detail/'+str(question.id)
   return HttpResponseRedirect(url)
+
+
+# search function
+def search(request):
+  if 'searchfieldText' in request.GET:
+    usrQuery= request.GET['searchfieldText']
+    # search the usrQuery
+    searchRes= Question.objects.filter(title__icontains= usrQuery)
+    # sort the result by latest
+    all_qns= searchRes.order_by('-id')
+    # get page object from question
+    all_qns_object= getPageObject(request,all_qns)
+
+    data= {'all_qns_object':all_qns_object}
+    return render(request, 'search.html',data)
+  else:
+    return HttpResponse('No Results')
