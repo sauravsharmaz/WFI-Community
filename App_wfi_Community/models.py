@@ -1,10 +1,12 @@
 from django.db import models
 # importing user
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # we used foreign key for many to one relationship
 class Question(models.Model):
     """(User Question Model)"""
+    id= models.AutoField(primary_key= True)
     AskedBy = models.ForeignKey(User, on_delete=models.CASCADE, default="Anonymous User")
     title = models.CharField(max_length=500)
     detail = models.TextField()
@@ -15,6 +17,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     """(User Answer Model)"""
+    id= models.AutoField(primary_key= True)
     AnsGiver= models.ForeignKey(User, on_delete= models.CASCADE)
     related_question = models.ForeignKey(Question, on_delete=models.CASCADE)
     detail = models.TextField()
@@ -24,6 +27,7 @@ class Answer(models.Model):
 
 class Comment(models.Model):
     """(User Comment Model)"""
+    id= models.AutoField(primary_key= True)
     answer= models.ForeignKey(Answer, on_delete= models.CASCADE)
     commented_By= models.ForeignKey(User, on_delete= models.CASCADE)
     post_time = models.DateTimeField(auto_now_add=True)
@@ -33,10 +37,12 @@ class Comment(models.Model):
 
 class Upvote(models.Model):
     """(User Upvote Model)"""
+    id= models.AutoField(primary_key= True)
     answer= models.ForeignKey(Answer, on_delete= models.CASCADE)
     Upvote_By= models.ForeignKey(User, on_delete= models.CASCADE)
 
 class DownVote(models.Model):
     """(User DownVote Model)"""
+    id= models.AutoField(primary_key= True)
     answer= models.ForeignKey(Answer, on_delete= models.CASCADE)
     DownVote_By= models.ForeignKey(User, on_delete= models.CASCADE)
