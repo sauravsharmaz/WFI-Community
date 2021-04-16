@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'App_wfi_Community',
     'django.contrib.humanize',
+    'askQuestion',
 ]
 
 MIDDLEWARE = [
