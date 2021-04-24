@@ -7,7 +7,7 @@ from django.utils import timezone
 class Question(models.Model):
     """(User Question Model)"""
     id= models.AutoField(primary_key= True)
-    AskedBy = models.ForeignKey(User, on_delete=models.CASCADE, default="Anonymous User")
+    AskedBy = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=500)
     detail = models.TextField()
     ask_time = models.DateTimeField(auto_now_add=True)

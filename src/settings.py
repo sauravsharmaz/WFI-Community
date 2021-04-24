@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'App_wfi_Community',
     'django.contrib.humanize',
     'askQuestion',
+    'authentiCation',
 ]
 
 MIDDLEWARE = [

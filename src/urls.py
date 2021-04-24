@@ -19,5 +19,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('App_wfi_Community.urls')),
+    path('',include('authentiCation.urls')),
     path('Ask/',include('askQuestion.urls')),
 ]

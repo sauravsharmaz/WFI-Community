@@ -46,7 +46,7 @@ def get_save_form_data(RequestedQuestion, request, fom):
 
 def index(request):
   # check if user is typing something
-  all_qns= Question.objects.all() 
+  all_qns= Question.objects.all().order_by('id')
   # passing all questions to paginator with 4 question for one page
   paginator= Paginator(all_qns, 4, orphans=2)
   # get page no from home.html element with name= 'page'
@@ -55,8 +55,11 @@ def index(request):
   page= paginator.get_page(page_number)
   # get all answer objects
   all_ans= Answer.objects.all()
+  # get the username to display on home
+  username= request.user.username
+  print('the username is =========> ',username)
   # pass all the data to dictionary
-  data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page}
+  data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page,'username':username}
   return render(request,'home.html', data) 
 
  
