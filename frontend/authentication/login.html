@@ -8,6 +8,9 @@
 </head>
 <body style="background-color:black;color:white">
     <h1>login</h1>
+    {% if warning %}
+        <h5 style="color:yellow">Please Login First</h5>
+    {% endif %}
     <form action="" method="post">{% csrf_token %}
         <p>Username <input type="text" name="username"></p>
         <p>Password <input type="password" name="password"></p>

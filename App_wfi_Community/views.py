@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import render
 from django.http import request, HttpResponseRedirect, HttpResponse
 # import the models 
 from .models import Question, Answer, Comment
@@ -11,6 +10,12 @@ from .forms import Write_Answer_form, CommentForm
 from django.contrib.auth.models import User
 # import timezone for update function
 from django.utils import timezone
+# reverse for efficient url redirecting
+from django.urls import reverse
+from django.shortcuts import redirect
+# temporary middleware
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 # functions to called in views 
@@ -47,7 +52,7 @@ def get_save_form_data(RequestedQuestion, request, fom):
 
 def index(request):
   # check if user is typing something
-  all_qns= Question.objects.all().order_by('id')
+  all_qns= Question.objects.all().order_by('-id')
   # passing all questions to paginator with 4 question for one page
   paginator= Paginator(all_qns, 4, orphans=2)
   # get page no from home.html element with name= 'page'
@@ -84,25 +89,51 @@ def detail(request,questionID):
 
 
 
-
 def writeAns(request,questionID):
-  # get the Question from ID
-  RequestedQuestion= Question.objects.get(id= questionID)
-  # check if there is a post request from template
-  if request.method == 'POST':
-    # get all the form data with post request into a variable
-    fom= Write_Answer_form(request.POST)
-    if fom.is_valid():
-      get_save_form_data(RequestedQuestion, request, fom)
-      # make a string url to pass as a arguments
-      url= '/detail/'+ str(questionID)
-      return HttpResponseRedirect(url)
+  # check if the user is authenticated
+  if request.user.is_authenticated:    
+    # get the Question from ID
+    RequestedQuestion= Question.objects.get(id= questionID)
+    # check if there is a post request from template
+    if request.method == 'POST':
+      # get all the form data with post request into a variable
+      fom= Write_Answer_form(request.POST)
+      if fom.is_valid():
+        get_save_form_data(RequestedQuestion, request, fom)
+        # make a string url to pass as a arguments
+        url= '/detail/'+ str(questionID)
+        return HttpResponseRedirect(url)
+    else:
+      # send blank form to template
+      fom= Write_Answer_form()
+      data= {'form':fom}
+      return render(request, 'writeAns.html', data)
+  
+  # if user is not authenticated
   else:
-    # send blank form to template
-    fom= Write_Answer_form()
-    data= {'form':fom}
-    return render(request, 'writeAns.html', data)
+    request.session['redirected']= 'True'
+    return redirect('login_page')
 
+# @login_required(login_url='login_page')
+# def writeAns(request,questionID):   
+#   # get the Question from ID
+#   RequestedQuestion= Question.objects.get(id= questionID)
+#   # check if there is a post request from template
+#   if request.method == 'POST':
+#     # get all the form data with post request into a variable
+#     fom= Write_Answer_form(request.POST)
+#     if fom.is_valid():
+#       get_save_form_data(RequestedQuestion, request, fom)
+#       # make a string url to pass as a arguments
+#       url= '/detail/'+ str(questionID)
+#       return HttpResponseRedirect(url)
+#   else:
+#     # send blank form to template
+#     fom= Write_Answer_form()
+#     data= {'form':fom}
+#     return render(request, 'writeAns.html', data)
+  
+@login_required(login_url='login_page')
 def saveComment(request, ansID, questionID):  
   if request.method == 'POST':
     fom= CommentForm(request.POST)
