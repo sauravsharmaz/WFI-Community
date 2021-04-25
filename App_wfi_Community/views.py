@@ -19,6 +19,7 @@ def getPageObject(request,all_qns):
   """Returns the page object of Questions"""
   paginator= Paginator(all_qns,4,orphans=3)
   pageNo= request.GET.get('page')
+  
 
 
 def getTags(RequestedQuestion):

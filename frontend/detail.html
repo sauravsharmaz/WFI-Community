@@ -34,6 +34,14 @@
           <i class="fas fa-edit text-danger qdetail-icon"></i>
           <a href="/writeAns/{{RequestedQuestion.id}}" class="mr-2">Write Answer</a>
         </p>
+        <p>
+          {% if Tags %}
+          Tags:
+          {% for tags in Tags %}
+          <button id="tagsColor" href="#" class="badge badge-secondary" >{{tags}}</button>
+          {% endfor %}
+          {% endif %}
+        </p>
           {% endwith %}
         </p>
       </div>
@@ -69,17 +77,10 @@
           <button href="" class="mr-2 btn btn-warning btn-sm">{{ans.AnsGiver}}</button>
           <button href="" class="mr-2 btn btn-primary btn-sm">Comments<span class="badge bg-danger">{{comentSet|length}}</span></button>
           <button href="" class="mr-2 btn btn-success btn-sm">{{ans.post_time|naturaltime}}</button>
-          <a href="/update/{{ans.id}}" class="mr-2 btn btn-dark btn-sm">Edit Answer</a>
-          <a href="/delete/{{ans.id}}" class="mr-2 btn deletbtn btn-sm">Delete Answer</a>
+          <a href="{% url 'update' ans.id %}" class="mr-2 btn btn-dark btn-sm">Edit Answer</a>
+          <a href="{% url 'deleteAns' ans.id %}" class="mr-2 btn deletbtn btn-sm">Delete Answer</a>
         </p>{% endwith %}
-        <p>
-          {% if Tags %}
-          Tags:
-          {% for tags in Tags %}
-          <button id="tagsColor" href="#" class="badge badge-secondary" >{{tags}}</button>
-          {% endfor %}
-          {% endif %}
-        </p>
+        
         <br />
         <!--comment section-->
         <h3 class="comnt-main-head">Comments</h3>
@@ -100,7 +101,7 @@
       <!-- comment form -->
       <div class="card my-3">
         <h6 class="card-header cmnt-heading">Add Comment</h6>
-        <form action="/saveComment/{{ans.id}}/{{RequestedQuestion.id}}" method="post">{% csrf_token %}
+        <form action="{% url 'saveComment' ans.id RequestedQuestion.id %}" method="post">{% csrf_token %}
           {{commentForm.as_p}}
           <button class="btn comment-btn" type="submit" value="submit">Comment</button>
         </form>

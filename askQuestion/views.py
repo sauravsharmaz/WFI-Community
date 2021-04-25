@@ -4,6 +4,7 @@ from App_wfi_Community.models import Question
 from askQuestion.forms import AskQuestionForm
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.urls import reverse
 # Create your views here.
 
 def ask(request):
@@ -18,7 +19,7 @@ def ask(request):
             questOb= Question(AskedBy=AskedBy,title=title,detail= detail,ask_time=ask_time,Tags=Tags)
             questOb.save()
             # redirect the user to home
-            return HttpResponseRedirect('/Ask/Success')
+            return HttpResponseRedirect(reverse('success_page'))
     else:
         fom= AskQuestionForm()
         data= {'form':fom}

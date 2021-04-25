@@ -4,8 +4,13 @@
 {% block body %}
  
 <!--  search button   -->
-<h5>Welcome {{username}},<h5>
-<form action="/search" method="get">
+
+{% if username %}
+  <h5>Welcome {{username}},<h5>
+{% else %}
+  <h5><a href="{% url 'register_Page' %}">Register</a></h5>
+{% endif %}
+<form action="{% url 'search' %}" method="get">
 <div class="container py-3 row">
   <div class="col-md-8 offset-2">
     <div class="input-group">
@@ -29,11 +34,12 @@
         <i class="fas fa-user-circle text-primary qdetail-icon"></i>
         <a href="" class="mr-2">{{question.AskedBy}}</a>
         <i class="fas fa-file-contract text-warning qdetail-icon"></i>
-        <a href="detail/{{question.id}}" class="mr-2">{{ansSet|length}} answers</a>
+        <!-- <a href="detail/{{question.id}}" class="mr-2">{{ansSet|length}} answers</a> -->
+        <a href="{% url 'detail_page' question.id %}" class="mr-2">{{ansSet|length}} answers</a>
         <i class="fas fa-history text-success qdetail-icon"></i>
         <a href="" class="mr-2">{{question.ask_time|naturaltime}}</a>
          <i class="fas fa-edit text-danger qdetail-icon"></i>
-        <a href="/writeAns/{{question.id}}" class="mr-2">Write Answer</a>
+        <a href="{% url 'writeAns_page' question.id %}" class="mr-2">Write Answer</a>
         {% endwith %}
       </p>
     </div>
