@@ -13,8 +13,8 @@ from django.utils import timezone
 # reverse for efficient url redirecting
 from django.urls import reverse
 from django.shortcuts import redirect
-# temporary middleware
-from django.contrib.auth.decorators import login_required
+# custom middleware
+from App_wfi_Community.decorators import authentication_required, welcome_user_auth
 
 # Create your views here.
 
@@ -49,7 +49,7 @@ def get_save_form_data(RequestedQuestion, request, fom):
 
 
 # functions to process and send data to templates
-
+@welcome_user_auth
 def index(request):
   # check if user is typing something
   all_qns= Question.objects.all().order_by('-id')
@@ -68,7 +68,7 @@ def index(request):
   data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page,'username':username}
   return render(request,'home.html', data) 
 
- 
+@authentication_required
 def detail(request,questionID):
   # get the Question from ID
   RequestedQuestion= Question.objects.get(id= questionID)
@@ -87,53 +87,28 @@ def detail(request,questionID):
     }
   return render(request, 'detail.html', data)
 
-
-
-def writeAns(request,questionID):
-  # check if the user is authenticated
-  if request.user.is_authenticated:    
-    # get the Question from ID
-    RequestedQuestion= Question.objects.get(id= questionID)
-    # check if there is a post request from template
-    if request.method == 'POST':
-      # get all the form data with post request into a variable
-      fom= Write_Answer_form(request.POST)
-      if fom.is_valid():
-        get_save_form_data(RequestedQuestion, request, fom)
-        # make a string url to pass as a arguments
-        url= '/detail/'+ str(questionID)
-        return HttpResponseRedirect(url)
+@authentication_required
+def writeAns(request,questionID): 
+  # get the Question from ID
+  RequestedQuestion= Question.objects.get(id= questionID)
+  # check if there is a post request from template
+  if request.method == 'POST':
+    # get all the form data with post request into a variable
+    fom= Write_Answer_form(request.POST)
+    if fom.is_valid():
+      get_save_form_data(RequestedQuestion, request, fom)
+      # make a string url to pass as a arguments
+      url= '/detail/'+ str(questionID)
+      return HttpResponseRedirect(url)
     else:
-      # send blank form to template
-      fom= Write_Answer_form()
-      data= {'form':fom}
-      return render(request, 'writeAns.html', data)
-  
-  # if user is not authenticated
+      return HttpResponse('you write the answer incorrectly')
   else:
-    request.session['redirected']= 'True'
-    return redirect('login_page')
+    # send blank form to template
+    fom= Write_Answer_form()
+    data= {'form':fom}
+    return render(request, 'writeAns.html', data)
 
-# @login_required(login_url='login_page')
-# def writeAns(request,questionID):   
-#   # get the Question from ID
-#   RequestedQuestion= Question.objects.get(id= questionID)
-#   # check if there is a post request from template
-#   if request.method == 'POST':
-#     # get all the form data with post request into a variable
-#     fom= Write_Answer_form(request.POST)
-#     if fom.is_valid():
-#       get_save_form_data(RequestedQuestion, request, fom)
-#       # make a string url to pass as a arguments
-#       url= '/detail/'+ str(questionID)
-#       return HttpResponseRedirect(url)
-#   else:
-#     # send blank form to template
-#     fom= Write_Answer_form()
-#     data= {'form':fom}
-#     return render(request, 'writeAns.html', data)
-  
-@login_required(login_url='login_page')
+@authentication_required
 def saveComment(request, ansID, questionID):  
   if request.method == 'POST':
     fom= CommentForm(request.POST)
@@ -148,6 +123,7 @@ def saveComment(request, ansID, questionID):
       return HttpResponseRedirect(url)
 
 # update the Answer
+@authentication_required
 def update(request, ansID):
   if request.method == 'POST':
     fom= Write_Answer_form(request.POST)
@@ -171,6 +147,7 @@ def update(request, ansID):
     return render(request, 'update.html',data)
 
 # delete the answer
+@authentication_required
 def deleteAns(request,ansID):
   answerOb= Answer.objects.get(id= ansID)
   question= Question.objects.get(title= answerOb.related_question)
@@ -181,6 +158,7 @@ def deleteAns(request,ansID):
 
 
 # search function
+@authentication_required
 def search(request):
   if 'searchfieldText' in request.GET:
     usrQuery= request.GET['searchfieldText']

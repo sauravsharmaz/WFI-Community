@@ -98,6 +98,14 @@
         </div>
         {% endfor %}
       </div>
+
+      <!--Testing space-->
+      <h1>==================================================</h1>
+        <h1>=============== Testing Area ======================</h1>
+        <h1>=============== Comment id from Answer=========================</h1>
+      {% for commentid in ans.comment_set.all %}
+        <h3>comment id is {{commentid.id}}</h3>
+      {% endfor %}
       <!-- comment form -->
       <div class="card my-3">
         <h6 class="card-header cmnt-heading">Add Comment</h6>
