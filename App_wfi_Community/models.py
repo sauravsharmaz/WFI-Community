@@ -38,8 +38,12 @@ class Comment(models.Model):
 class Upvote(models.Model):
     """(User Upvote Model)"""
     id= models.AutoField(primary_key= True)
+    value= models.BigIntegerField(default=0,null=True)
     answer= models.ForeignKey(Answer, on_delete= models.CASCADE)
     Upvote_By= models.ForeignKey(User, on_delete= models.CASCADE)
+    def __str__(self):
+        return str(self.value)
+    
 
 class DownVote(models.Model):
     """(User DownVote Model)"""

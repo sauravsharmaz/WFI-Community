@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import request, HttpResponseRedirect, HttpResponse
 # import the models 
-from .models import Question, Answer, Comment
+from .models import Question, Answer, Comment, Upvote
 # import paginator for pagination
 from django.core.paginator import Paginator
 # import forms
@@ -63,7 +63,6 @@ def index(request):
   all_ans= Answer.objects.all()
   # get the username to display on home
   username= request.user.username
-  print('the username is =========> ',username)
   # pass all the data to dictionary
   data={'all_ans':all_ans,'all_qns':all_qns,'page_object':page,'username':username}
   return render(request,'home.html', data) 
@@ -86,6 +85,37 @@ def detail(request,questionID):
     'commentForm':commentform,
     }
   return render(request, 'detail.html', data)
+
+# @authentication_required
+# def detail(request,questionID):
+#   # get the Question from ID
+#   RequestedQuestion= Question.objects.get(id= questionID)
+#   # get the tags
+#   Tags= getTags(RequestedQuestion)
+#   # get the Answer
+#   ans_A= Answer.objects.filter(related_question= RequestedQuestion)
+  
+  
+#   # adding custom values to query set
+#   Answer_Objects= {}
+#   for ans in ans_A:
+#     id= ans.id
+#     AnsGiver= ans.AnsGiver
+#     related_question= ans.related_question
+#     detail= ans.detail
+#     post_time= ans.post_time
+
+#   print('The answer dictionary is: ',Answer_Objects)
+#   # get the comment form
+#   commentform= CommentForm()
+#   # pass the info to data 
+#   data= {
+#     'RequestedQuestion':RequestedQuestion,
+#     'ans_A':ans_A,
+#     'Tags':Tags,
+#     'commentForm':commentform,
+#     }
+#   return render(request, 'detail.html', data)
 
 @authentication_required
 def writeAns(request,questionID): 
@@ -173,3 +203,16 @@ def search(request):
     return render(request, 'search.html',data)
   else:
     return HttpResponse('No Results')
+    
+@authentication_required
+def upvote(request, ansID):
+  ansOb= Answer.objects.get(id=ansID)
+  upvote_Ob= Upvote.objects.get(answer=ansOb)
+  upvtID= upvote_Ob.id
+  value= (upvote_Ob.value)+1
+  Upvote_By= User.objects.get(pk= request.user.id)
+  # saving the upvote to upvote model
+  upvt= Upvote(id=upvtID,answer=ansOb,value=value,Upvote_By=Upvote_By)
+  upvt.save()
+  print('saved successfully.!')
+  return HttpResponse('you upvoted the answer ')

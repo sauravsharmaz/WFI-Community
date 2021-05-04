@@ -9,4 +9,5 @@ urlpatterns = [
     path('update/<int:ansID>',views.update,name='update'), 
     path('delete/<int:ansID>',views.deleteAns,name='deleteAns'),
     path('search/', views.search,name='search'), 
+    path('upvote/<int:ansID>',views.upvote,name='upvote'),
 ]

@@ -57,15 +57,17 @@
     <div class="row mt-5 mb-5">
       <div class="col-1">
         <div class="upvote">
-          <strong>213</strong><br />
-          <span class="text-success mr-2">
+          {% for val in ans.upvote_set.all %}
+          <strong>{{val.value}}</strong><br /><a href="{% url 'upvote' ans.id %}">
+          {% endfor %}  
+            <span class="text-success mr-2">
             <i class="fas fa-arrow-circle-up fa-2x"></i>
-          </span>
+          </span></a>
         </div>
-        <div class="downvote mt-1">
+        <div class="downvote mt-1"><a href="#">
           <span class="text-danger">
             <i class="fas fa-arrow-circle-down fa-2x"></i>
-          </span><br />
+          </span></a><br />
           <strong>21</strong>
         </div>
       </div>
@@ -99,13 +101,6 @@
         {% endfor %}
       </div>
 
-      <!--Testing space-->
-      <h1>==================================================</h1>
-        <h1>=============== Testing Area ======================</h1>
-        <h1>=============== Comment id from Answer=========================</h1>
-      {% for commentid in ans.comment_set.all %}
-        <h3>comment id is {{commentid.id}}</h3>
-      {% endfor %}
       <!-- comment form -->
       <div class="card my-3">
         <h6 class="card-header cmnt-heading">Add Comment</h6>
