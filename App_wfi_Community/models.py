@@ -48,5 +48,37 @@ class Upvote(models.Model):
 class DownVote(models.Model):
     """(User DownVote Model)"""
     id= models.AutoField(primary_key= True)
+    value= models.BigIntegerField(default=0,null=True)
     answer= models.ForeignKey(Answer, on_delete= models.CASCADE)
     DownVote_By= models.ForeignKey(User, on_delete= models.CASCADE)
+
+
+# def upvote(request, ansID):
+#   ansOb= Answer.objects.get(id=ansID)
+#   try:
+#     upvote_Ob= Upvote.objects.get(answer=ansOb)
+#     upvtID= upvote_Ob.id
+#     value= (upvote_Ob.value)+1
+#     Upvote_By= User.objects.get(pk= request.user.id)
+#   except Exception as e:
+#     print('exception in upvote: ',e)
+#     value= 1
+#     Upvote_By= User.objects.get(pk= request.user.id)
+#     upvtOb= Upvote(value=value,answer=ansOb,Upvote_By=Upvote_By)
+#     upvtOb.save()
+#     print('but i maked a upvote obj for this question & saved it successfully.!')
+#     return HttpResponse('You Upvoted this Question')
+
+#   # saving the upvote to upvote model
+#   try:
+#     if Upvote.objects.filter(id=upvtID,Upvote_By=Upvote_By).count() == 0:
+#       upvt= Upvote(id=upvtID,answer=ansOb,value=value,Upvote_By=Upvote_By)
+#       upvt.save()
+#       print('saved successfully.!')
+#     else:
+#       return HttpResponse('you cant upvote more than one time')
+#   except Exception as e:
+#     print('a exception has came: ')
+#     print(e)
+#   # print('saved successfully.!')
+#   return HttpResponse('you upvoted the answer ')

@@ -65,11 +65,12 @@
             <i class="fas fa-arrow-circle-up fa-2x"></i>
           </span></a>
         </div>
-        <div class="downvote mt-1"><a href="#">
+        <div class="downvote mt-1"><a href="{% url 'downvote' ans.id %}">
           <span class="text-danger">
             <i class="fas fa-arrow-circle-down fa-2x"></i>
           </span></a><br />
-          <strong>21</strong>
+          {% for val in ans.downvote_set.all %}
+          <strong>{{val.value}}</strong>{% endfor %}
         </div>
       </div>
       <!--Answer Section-->

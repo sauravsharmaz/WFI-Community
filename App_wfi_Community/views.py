@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import request, HttpResponseRedirect, HttpResponse
 # import the models 
-from .models import Question, Answer, Comment, Upvote
+from .models import Question, Answer, Comment, Upvote, DownVote
 # import paginator for pagination
 from django.core.paginator import Paginator
 # import forms
@@ -221,7 +221,7 @@ def upvote(request, ansID):
     print('but i maked a upvote obj for this question & saved it successfully.!')
     return HttpResponse('You Upvoted this Question')
 
-  # saving the upvote to upvote model
+  # updating the upvote to upvote model
   try:
     if Upvote.objects.filter(id=upvtID,Upvote_By=Upvote_By).count() == 0:
       upvt= Upvote(id=upvtID,answer=ansOb,value=value,Upvote_By=Upvote_By)
@@ -234,3 +234,31 @@ def upvote(request, ansID):
     print(e)
   # print('saved successfully.!')
   return HttpResponse('you upvoted the answer ')
+
+def downVote(request,ansID):
+  ansOb= Answer.objects.get(id=ansID)
+  try:
+    downVote_ob= DownVote.objects.get(answer=ansOb)
+    dwnvt_ID= downVote_ob.id
+    value= (downVote_ob.value)+1
+    DownVote_usr= User.objects.get(pk=request.user.id)
+  except Exception as e:
+    print('An exception in Down Vote: ',e)
+    value=1
+    Downvote_user= User.objects.get(pk= request.user.id)
+    downVote_ob= DownVote(value=value,answer=ansOb,DownVote_By=Downvote_user)
+    downVote_ob.save()
+    print('but i make a downvote obj & saved it successfully.!')
+    return HttpResponse('You DownVote this Answer')
+  # updating the downVote model
+  try:
+    if DownVote.objects.filter(id=dwnvt_ID,DownVote_By=DownVote_usr).count() == 0:
+      downVote_obj= DownVote(id=dwnvt_ID,answer=ansOb,value=value,DownVote_By=DownVote_usr)
+      downVote_obj.save()
+      print('downVote updated successfully')
+      return HttpResponse('you DownVote this Answer')
+    else:
+      return HttpResponse('you cant downVote more than one time')
+  except Exception as e:
+    print('exception in updating downvote: ',e)
+  return HttpResponse('NO condition working in downvote view function')
