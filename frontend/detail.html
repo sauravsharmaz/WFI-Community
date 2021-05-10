@@ -60,7 +60,7 @@
           {% for val in ans.upvote_set.all %}
           <strong>{{val.value}}</strong><br/>
           {% endfor %}  
-          <a href="{% url 'upvote' ans.id %}">
+          <a href="{% url 'upvote' ans.id RequestedQuestion.id %}">
             <span class="text-success mr-2">
             <i class="fas fa-arrow-circle-up fa-2x"></i>
           </span></a>
