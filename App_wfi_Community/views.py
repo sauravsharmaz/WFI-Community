@@ -189,69 +189,27 @@ def search(request):
 
 
 def downVote(request, ansID):
-    ansOb = Answer.objects.get(id=ansID)
-    try:
-        downVote_ob = DownVote.objects.get(answer=ansOb)
-        dwnvt_ID = downVote_ob.id
-        value = (downVote_ob.value)+1
-        DownVote_usr = User.objects.get(pk=request.user.id)
-    except Exception as e:
-        print('An exception in Down Vote: ', e)
-        value = 1
-        Downvote_user = User.objects.get(pk=request.user.id)
-        downVote_ob = DownVote(value=value, answer=ansOb,
-                               DownVote_By=Downvote_user)
-        # check if the user has upvoted
-        if Upvote.objects.filter(answer=ansOb, Upvote_By=Downvote_user).count() == 0:
-            downVote_ob.save()
-            print('but i make a downvote obj & saved it successfully.!')
-            return HttpResponse('You DownVote this Answer')
-        else:
-            print('You have upvote this answer so upvote will delete...')
-            downVote_ob.save()
-            # delete the upvote for this:
-            upvote_Obj = Upvote.objects.get(
-                answer=ansOb, Upvote_By=Downvote_user)
-            upvote_Obj.delete()
-            return HttpResponse('you downvote this answer but since you also upvote this so the upvote has removed')
-    # updating the downVote model
-    try:
-        if DownVote.objects.filter(id=dwnvt_ID, DownVote_By=DownVote_usr).count() == 0:
-            # check if the user has upvoted
-            if Upvote.objects.filter(answer=ansOb, Upvote_By=DownVote_usr).count() == 0:
-                downVote_obj = DownVote(
-                    id=dwnvt_ID, answer=ansOb, value=value, DownVote_By=DownVote_usr)
-                downVote_obj.save()
-                print('downVote updated successfully')
-                return HttpResponse('you DownVote this Answer')
-            else:
-                print('You have upvote this answer so upvote will delete...')
-                downVote_ob.save()
-                print('downVote updated success')
-                # delete the upvote for this:
-                upvote_Obj = Upvote.objects.get(
-                    answer=ansOb, Upvote_By=DownVote_usr)
-                up_id = upvote_Obj.id
-                val = (upvote_Obj.value) - 1
-                upvt = Upvote(id=up_id, answer=ansOb,
-                              value=val, Upvote_By=DownVote_usr)
-                upvt.save()
-                print('upvote for this answer has deleted')
-                return HttpResponse('you downvote this answer but since you also upvote this so the upvote has removed')
-        else:
-            return HttpResponse('you cant downVote more than one time')
-    except Exception as e:
-        print('exception in updating downvote: ', e)
-    return HttpResponse('NO condition working in downvote view function')
+    pass
+    return HttpResponse('functionality not available')
+
+def get_args():
+    pass
+
+Current_Ans= None
+
+def release_ans(ans):
+    global Current_Ans
+    Current_Ans= ans
 
 
 def upvote(request, ansID, quesID):
     url = "/detail/"+str(quesID)
     usr = User.objects.get(pk=request.user.id)
     ans_ob = Answer.objects.get(id=ansID)
-    if check_upvote_record(usr, ans_ob) != "no":
+    release_ans(ans_ob)
+    if check_upvote_record(usr, ans_ob) == "yes":
         print('this answer is already upvoted by: ',usr)
-    else:
+    elif check_upvote_record(usr, ans_ob) == "no":
         save_to_upvt_rec(usr, ans_ob)
         print('saved to upvote record')
         update_upvote(ans_ob)
