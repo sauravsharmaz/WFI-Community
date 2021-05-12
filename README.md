@@ -10,4 +10,4 @@ This is an Q&amp;A Website to help Indian FreeStyle wrestlers Ask their doubts f
 * Django
 * HTML
 * CSS
-* JAVASCRIPT
+* Bootstrap
