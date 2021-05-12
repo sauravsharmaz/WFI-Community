@@ -10,5 +10,5 @@ urlpatterns = [
     path('delete/<int:ansID>',views.deleteAns,name='deleteAns'),
     path('search/', views.search,name='search'), 
     path('upvote/<int:ansID>/<int:quesID>',views.upvote,name='upvote'),
-    path('downvote/<int:ansID>',views.downVote,name='downvote'),
+    path('downvote/<int:ansID>/<int:quesID>',views.downVote,name='downvote'),
 ]

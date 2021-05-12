@@ -65,7 +65,7 @@
             <i class="fas fa-arrow-circle-up fa-2x"></i>
           </span></a>
         </div>
-        <div class="downvote mt-1"><a href="{% url 'downvote' ans.id %}">
+        <div class="downvote mt-1"><a href="{% url 'downvote' ans.id RequestedQuestion.id %}">
           <span class="text-danger">
             <i class="fas fa-arrow-circle-down fa-2x"></i>
           </span></a><br />

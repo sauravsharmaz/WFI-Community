@@ -1,9 +1,17 @@
-from App_wfi_Community.models import Upvote
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+from django.dispatch import Signal, receiver
+from .signal_helpers import chk_usr_dnvt_rec, chk_usr_upvt_rec, delete_downVote, delete_upvote
 
 from .models import Upvote
 
-@receiver(pre_save, sender= Upvote)
-def upvt_save_handler(sender, instance, **kwargs):
-    pass
+delete_downvote = Signal(providing_args=['ans', 'usr'])
+delete_upVote = Signal(providing_args=['ans','usr'])
+
+@receiver(delete_downvote)
+def upvt_save_handler(ans, usr, **kwargs):
+    if chk_usr_dnvt_rec(ans, usr) == "yes":
+        delete_downVote(ans)
+
+@receiver(delete_upVote)
+def dnvt_save_handler(ans,usr,**kwargs):
+    if chk_usr_upvt_rec(ans,usr) == "yes":
+        delete_upvote(ans)

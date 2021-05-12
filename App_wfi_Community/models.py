@@ -1,6 +1,8 @@
 from django.db import models
 # importing user
 from django.contrib.auth.models import User
+from django.db.models.base import Model
+from django.db.models.expressions import Value
 from django.utils import timezone
 
 # we used foreign key for many to one relationship
@@ -56,5 +58,9 @@ class DownVote(models.Model):
     id= models.AutoField(primary_key= True)
     value= models.BigIntegerField(default=0,null=True)
     answer= models.ForeignKey(Answer, on_delete= models.CASCADE)
-    DownVote_By= models.ForeignKey(User, on_delete= models.CASCADE)
 
+class DownVote_record(models.Model):
+    id= models.AutoField(primary_key=True)
+    val= models.IntegerField(default=0,null=True)
+    ans= models.ForeignKey(Answer,on_delete=models.CASCADE)
+    usr= models.ForeignKey(User,on_delete=models.CASCADE)

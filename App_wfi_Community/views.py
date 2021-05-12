@@ -1,3 +1,4 @@
+from App_wfi_Community import signals, urls
 from django.shortcuts import render
 from django.http import request, HttpResponseRedirect, HttpResponse
 # import the models
@@ -188,29 +189,28 @@ def search(request):
         return HttpResponse('No Results')
 
 
-def downVote(request, ansID):
-    pass
-    return HttpResponse('functionality not available')
+def downVote(request, ansID, quesID):
+    url= "/detail/"+str(quesID)
+    usr= User.objects.get(pk= request.user.id)
+    ansob= Answer.objects.get(id=ansID)
+    if chk_downvote_record(usr,ansob) == "yes":
+        print('this ans is already downvoted by: ',usr)
+    elif chk_downvote_record(usr,ansob) == "no":
+        save_to_downvote_record(usr,ansob)
+        update_downvote(ansob)
+        signals.delete_upVote.send(sender=None,ans=ansob,usr=usr)
+    return HttpResponseRedirect(url)
 
-def get_args():
-    pass
-
-Current_Ans= None
-
-def release_ans(ans):
-    global Current_Ans
-    Current_Ans= ans
 
 
 def upvote(request, ansID, quesID):
     url = "/detail/"+str(quesID)
     usr = User.objects.get(pk=request.user.id)
     ans_ob = Answer.objects.get(id=ansID)
-    release_ans(ans_ob)
     if check_upvote_record(usr, ans_ob) == "yes":
-        print('this answer is already upvoted by: ',usr)
+        pass
     elif check_upvote_record(usr, ans_ob) == "no":
         save_to_upvt_rec(usr, ans_ob)
-        print('saved to upvote record')
         update_upvote(ans_ob)
+        signals.delete_downvote.send(sender=None,ans=ans_ob,usr=usr)
     return HttpResponseRedirect(url)
