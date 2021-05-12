@@ -3,7 +3,7 @@ This is an Q&amp;A Website to help Indian FreeStyle wrestlers Ask their doubts f
 
 # Here is an SnapShot of the Website
 
-<img src="https://github.com/sauravsharmaz/WFI-Community/blob/main/snaps/Screen%20Shot%202021-04-06%20at%2010.23.35.png">
+<img src="https://github.com/sauravsharmaz/WFI-Community/blob/main/snaps/snap_detail_page.png">
 
 # Technologies Used
 
