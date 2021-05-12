@@ -23,7 +23,6 @@ def delete_downVote(ans):
     val = dnvt.value - 1
     ob = DownVote(id=iD, value=val, answer=ans)
     ob.save()
-    print('downVote for this ans has reduced by 1')
 
 def delete_upvote(ans):
     upvt= Upvote.objects.get(answer= ans)
@@ -31,4 +30,3 @@ def delete_upvote(ans):
     val= upvt.value - 1
     ob = Upvote(id=iD,value=val,answer=ans)
     ob.save()
-    print('upvote for this has reduced by 1')

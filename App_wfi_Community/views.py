@@ -59,7 +59,7 @@ def index(request):
     # check if user is typing something
     all_qns = Question.objects.all().order_by('-id')
     # passing all questions to paginator with 4 question for one page
-    paginator = Paginator(all_qns, 4, orphans=2)
+    paginator = Paginator(all_qns, 6, orphans=2)
     # get page no from home.html element with name= 'page'
     page_number = request.GET.get('page')
     # making page object

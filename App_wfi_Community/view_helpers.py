@@ -22,16 +22,12 @@ def save_to_downvote_record(usr, ans):
 def check_upvote_record(usr, ans_ob):
     try:
         upvt_rec = Upvote_record.objects.get(ans=ans_ob, usr=usr)
-        print('upvote record for this user on this ans found')
         return "yes"
     except Upvote_record.DoesNotExist:
-        print('the record with the provided usr not exist')
         return "no"
     except Upvote_record.MultipleObjectsReturned:
-        print('there are more than one record for this usr and ans')
         return "yes"
     except Exception as e:
-        print('there is no upvote record for this user')
         return "no"
 
 
@@ -46,12 +42,10 @@ def update_upvote(ansob):
         val= upvote.value + 1
         ob= Upvote(id=upvote.id,answer=ansob,value=val)
         ob.save()
-        print('updated upvote value')
     except Exception as e:
         val= 1
         ob = Upvote(value=val,answer=ansob)
         ob.save()
-        print('no upvote value so created a one and saved that')
 
 def update_downvote(ansob):
     try:
@@ -59,9 +53,7 @@ def update_downvote(ansob):
         val= dnvt.value + 1
         ob= DownVote(id=dnvt.id,value=val,answer=ansob)
         ob.save()
-        print('downvote updated')
     except Exception as e:
         val= 1
         ob= DownVote(value=val,answer=ansob)
         ob.save()
-        print('no downvote value, so i created one and saved that')
