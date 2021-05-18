@@ -1,3 +1,4 @@
+from django.db.models.query_utils import Q
 from App_wfi_Community import signals, urls
 from django.shortcuts import render
 from django.http import request, HttpResponseRedirect, HttpResponse
@@ -174,19 +175,20 @@ def deleteAns(request, ansID):
 # search function
 @authentication_required
 def search(request):
-    if 'searchfieldText' in request.GET:
-        usrQuery = request.GET['searchfieldText']
-        # search the usrQuery
-        searchRes = Question.objects.filter(title__icontains=usrQuery)
-        # sort the result by latest
-        all_qns = searchRes.order_by('-id')
-        # get page object from question
-        all_qns_object = getPageObject(request, all_qns)
-
-        data = {'all_qns_object': all_qns_object}
-        return render(request, 'search.html', data)
-    else:
-        return HttpResponse('No Results')
+    usr_qry= request.GET['searchfieldText']
+    print(usr_qry)
+    # for use with postgre
+    # search_res1= Question.objects.filter(detail__icontains=usr_qry).order_by('id')
+    # search_res2= Question.objects.filter(title__icontains=usr_qry).order_by('id')
+    # final_res= search_res1.union(search_res2)
+    final_res= Question.objects.filter(Q(title__icontains=usr_qry) or Q(detail__icontains=usr_qry))
+    print('the search res are:',final_res)
+    pag_ob= Paginator(final_res,per_page=3)
+    print(f"Total no of question found with search are: {pag_ob.count}")
+    print(f"Total no of pages found with the question are: {pag_ob.num_pages}")
+    print(f"The Page range is: {pag_ob.page_range}")
+    print('the item in the page 1 are:',pag_ob.page(1).object_list)
+    return HttpResponse('chk terminal')
 
 
 def downVote(request, ansID, quesID):
