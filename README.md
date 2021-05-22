@@ -11,3 +11,4 @@ This is an Q&amp;A Website to help Indian FreeStyle wrestlers Ask their doubts f
 * HTML
 * CSS
 * Bootstrap
+* Postgresql
