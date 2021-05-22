@@ -26,7 +26,7 @@
         <p>
         {% with RequestedQuestion.answer_set.all as ansSet %}
         <p class="mr-2">
-          <i class="fas fa-user-circle text-primary qdetail-icon"></i> {{RequestedQuestion.AskedBy}}
+          <i class="fas fa-user-circle text-primary qdetail-icon"></i><a href="{% url 'usr_profile' RequestedQuestion.AskedBy  %}">{{RequestedQuestion.AskedBy}}</a> 
           <i class="fas fa-file-contract text-warning qdetail-icon"></i>
           {{ansSet|length}} Answers
           <i class="fas fa-history text-success qdetail-icon"></i>
