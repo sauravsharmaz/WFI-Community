@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'askQuestion',
     'authentiCation',
+    'usr_profile',
 ]
 
 MIDDLEWARE = [

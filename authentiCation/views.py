@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.shortcuts import redirect
+from usr_profile import signals
 
 # imports for test purpose
 from django.http import HttpResponse
@@ -18,11 +19,12 @@ def register_Page(request):
     if request.method == 'POST':
         form= UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save()            
             username= request.POST['username']
             password= request.POST['password1']
             user= authenticate(request,username=username,password=password)
             login(request,user)
+            signals.create_profile.send(sender=None,usr=request.user)
             return HttpResponseRedirect('/')
         else:
             return HttpResponse('Either the user name is not available or you may have filled the form incorrectly')
