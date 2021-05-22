@@ -175,20 +175,20 @@ def deleteAns(request, ansID):
 # search function
 @authentication_required
 def search(request):
-    usr_qry= request.GET['searchfieldText']
-    print(usr_qry)
+    # usr_qry= request.GET['searchfieldText']
+    # print(usr_qry)
     # for use with postgre
     # search_res1= Question.objects.filter(detail__icontains=usr_qry).order_by('id')
     # search_res2= Question.objects.filter(title__icontains=usr_qry).order_by('id')
     # final_res= search_res1.union(search_res2)
-    final_res= Question.objects.filter(Q(title__icontains=usr_qry) or Q(detail__icontains=usr_qry))
-    print('the search res are:',final_res)
-    pag_ob= Paginator(final_res,per_page=3)
-    print(f"Total no of question found with search are: {pag_ob.count}")
-    print(f"Total no of pages found with the question are: {pag_ob.num_pages}")
-    print(f"The Page range is: {pag_ob.page_range}")
-    print('the item in the page 1 are:',pag_ob.page(1).object_list)
-    return HttpResponse('chk terminal')
+    # final_res= Question.objects.filter(Q(title__icontains=usr_qry) or Q(detail__icontains=usr_qry))
+    # print('the search res are:',final_res)
+    # pag_ob= Paginator(final_res,per_page=3)
+    # print(f"Total no of question found with search are: {pag_ob.count}")
+    # print(f"Total no of pages found with the question are: {pag_ob.num_pages}")
+    # print(f"The Page range is: {pag_ob.page_range}")
+    # print('the item in the page 1 are:',pag_ob.page(1).object_list)
+    return HttpResponse('search functionality is not available yet')
 
 
 def downVote(request, ansID, quesID):
