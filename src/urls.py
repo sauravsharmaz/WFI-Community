@@ -21,4 +21,5 @@ urlpatterns = [
     path('',include('App_wfi_Community.urls')),
     path('',include('authentiCation.urls')),
     path('Ask/',include('askQuestion.urls')),
+    path('profile/',include('usr_profile.urls')),
 ]
