@@ -64,7 +64,7 @@ def index(request):
     # get page no from home.html element with name= 'page'
     page_number = request.GET.get('page')
     # making page object
-    page = paginator.get_page(page_number)
+    page = paginator.get_page(page_number) #this will be changed
     # get all answer objects
     all_ans = Answer.objects.all()
     # get the username to display on home
