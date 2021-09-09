@@ -93,7 +93,7 @@ def detail(request, questionID):
         'commentForm': commentform,
     }
     return render(request, 'detail.html', data)
-
+# this is the feature final
 
 @authentication_required
 def writeAns(request, questionID):
